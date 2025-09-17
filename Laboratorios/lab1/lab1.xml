@@ -11,11 +11,177 @@
             `10
             -> 5 -> 15 -> 25`.
         </enunciado>
-        <codigo lenguaje="">
-            <!-- Inserta la solución al enunciado aquí-->
+        <codigo lenguaje="Schar">
+           using System;
+using static System.Console;
+namespace lab1
+{
+    class Nodo1
+    {
+        public int Valor;
+        public Nodo1 Siguiente;
+        public Nodo1(int valor)
+        {
+            Valor = valor;
+            Siguiente = null;
+        }
+
+    }
+}
+using System;
+using static System.Console;
+
+
+namespace lab1
+{
+    class ListaSimple1
+    {
+        public Nodo1 Cabeza;
+        public ListaSimple1()
+        {
+            Cabeza = null;
+        }
+        public void Agregar(int valor)
+        {
+            Nodo1 nuevo = new Nodo1(valor);
+            if (Cabeza == null)
+            {
+                Cabeza = nuevo;
+            }
+            else
+            {
+                Nodo1 actual = Cabeza;
+                while(actual.Siguiente != null)
+                {
+                    actual = actual.Siguiente;
+                }
+                actual.Siguiente = nuevo;
+            }
+        }
+        public void MovermaximoalFinal()
+        {
+            if (Cabeza == null || Cabeza.Siguiente == null) return;
+            Nodo1 nodoAnteriorMaximo = null;
+            Nodo1 nodoMaximo = Cabeza;
+            Nodo1 nodoAnterior = null;
+            Nodo1 actual = Cabeza;
+            while (actual != null)   //BUSMAR EL NODO MAX
+            {
+                if(actual.Valor > nodoMaximo.Valor)
+                {
+                    nodoMaximo = actual;
+                    nodoAnteriorMaximo = nodoAnterior;
+                }
+                nodoAnterior = actual;
+                actual = actual.Siguiente;
+                
+            }
+            if (nodoMaximo.Siguiente == null) return;  //SI YA SE ENCUENTRA AL FINAL, NO SE HACE NADA
+            
+            if (nodoAnteriorMaximo != null) //PARA PODER QUITAR EL NODO MAXIMO
+            {
+                nodoAnteriorMaximo.Siguiente = nodoMaximo.Siguiente;
+            }
+            else
+            {
+                Cabeza = nodoMaximo.Siguiente;
+            }
+                nodoAnterior.Siguiente = nodoMaximo;   //PARA PONER AL FINAL
+            nodoMaximo.Siguiente = null;
+        }
+        public void OrdenarAscendente()
+        {
+            if (Cabeza == null || Cabeza.Siguiente == null) return;
+            bool cambiado;
+            do
+            {
+                cambiado = false;
+                Nodo1 actual = Cabeza;
+                while (actual.Siguiente != null)
+                {
+                    if (actual.Valor > actual.Siguiente.Valor)
+                    {
+                        int temp = actual.Valor;
+                        actual.Valor = actual.Siguiente.Valor;
+                        actual.Siguiente.Valor = temp;
+                        cambiado = true;
+                    }
+                    actual = actual.Siguiente;
+                }
+            } while (cambiado);
+        }
+        public void Imprimir()
+        {
+            Nodo1 actual = Cabeza;
+            while (actual != null)
+            {
+                WriteLine(actual.Valor + "--->");
+                actual = actual.Siguiente;
+            }
+            WriteLine("null");
+        }
+
+    }
+}
+sing System;
+using static System.Console;
+namespace lab1
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            //NODO 1 Y LISTA SIMPLE 1
+            ListaSimple1 lista = new ListaSimple1();
+            lista.Agregar(3);
+            lista.Agregar(8);
+            lista.Agregar(10);
+            lista.Agregar(25);
+            lista.Agregar(15);
+            lista.Agregar(5);
+            WriteLine("EJERCICIO 1");
+            WriteLine("La lista original es: ");
+            lista.Imprimir();
+            lista.MovermaximoalFinal();
+            WriteLine("La lista despues de haber movido el maximo al final: ");
+            lista.OrdenarAscendente();
+            WriteLine("La lista ordenada en forma ascendente: ");
+            lista.Imprimir();
+
+        }
+    }
+}
         </codigo>
         <pruebas>
-            <!-- Inserta las pruebas al código implementado aquí-->
+            
+EJERCICIO 1
+
+La lista original es:
+3.
+8.
+10.
+25.
+15.
+5.
+null
+
+La lista después de haber movido el máximo al final:
+3.
+8.
+10.
+15.
+5.
+25.
+null
+
+La lista ordenada en forma ascendente:
+3.
+5.
+8.
+10.
+15.
+25.
+null
         </pruebas>
         <complejidad>
             <!-- Inserta la complejidad (orden de magnitud de la solución) aquí-->
@@ -33,11 +199,117 @@
             cabeza
             de la lista podría cambiar.
         </enunciado>
-        <codigo lenguaje="">
-            <!-- Inserta la solución al enunciado aquí-->
+        <codigo lenguaje="Csahar">
+            using System;
+using static System.Console;
+
+namespace lab1
+{
+    internal class Nodo2
+    {
+        public int Valor;
+        public Nodo2 Siguiente;
+        public Nodo2(int valor)
+        { Valor = valor;
+            Siguiente = null;
+        }
+
+        
+    }
+}
+using System;
+using static System.Console;
+
+namespace lab1
+{
+    internal class ListaSimple2
+    {
+        public Nodo2 Cabeza;  
+
+        public void Agregar(int valor)
+        {
+            Nodo2 nuevo = new Nodo2(valor);
+            if (Cabeza == null)
+            {
+                Cabeza = nuevo; 
+            }
+            else
+            {
+                Nodo2 actual = Cabeza;
+                while (actual.Siguiente != null)
+                {
+                    actual = actual.Siguiente;
+                }
+                actual.Siguiente = nuevo;
+            }
+        }
+        public void EliminarDominados()
+        {
+            while (Cabeza != null && Cabeza.Siguiente != null && Cabeza.Valor < Cabeza.Siguiente.Valor) 
+            {
+                Cabeza = Cabeza.Siguiente;  
+            }
+
+            Nodo2 actual = Cabeza;  
+
+            while (actual != null && actual.Siguiente != null)
+            {
+                if (actual.Siguiente.Siguiente != null && actual.Siguiente.Valor < actual.Siguiente.Siguiente.Valor) 
+                {
+                    actual.Siguiente = actual.Siguiente.Siguiente;
+                }
+                else
+                {
+                    actual = actual.Siguiente;
+                }
+            }
+        }
+
+        public void Imprimir()
+        {
+            Nodo2 actual = Cabeza;
+            while (actual != null)
+            {
+               Write(actual.Valor + " , ");
+                actual = actual.Siguiente;
+            }
+            WriteLine("null");
+        }
+    }
+}
+using System;
+using static System.Console;
+namespace lab1
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            // EJERCICIO 2: ListaSimple2
+            ListaSimple2 lista2 = new ListaSimple2();
+            int[] valores = { 3, 8, 2, 9, 5, 4 };
+            foreach (int v in valores) lista2.Agregar(v);
+            WriteLine("\nEJERCICIO 2");
+            WriteLine("\nLista original:");
+            lista2.Imprimir();
+            lista2.EliminarDominados();
+            WriteLine("\nLista sin dominados:");
+            lista2.Imprimir();
+        }
+    }
+}
+
+
         </codigo>
         <pruebas>
-            <!-- Inserta las pruebas al código implementado aquí-->
+            <
+EJERCICIO 2
+
+Lista original:
+3 , 8 , 2 , 9 , 5 , 4 , null
+
+Lista sin dominados:
+8 , 9 , 5 , 4 , null
         </pruebas>
         <complejidad>
             <!-- Inserta la complejidad (orden de magnitud de la solución) aquí-->
@@ -51,12 +323,106 @@
             no apunta a la misma mitad de la lista (es decir, el problema tiene una solución no
             trivial). Por ejemplo, si la lista es `A <-> B <-> C <-> D <-> E` y k=1, el nodo en el índice 1
             ('B') debe intercambiarse con el nodo en el índice 3 ('D'). El resultado sería `A <-> D <->
-            C <-> B <-> E`. </enunciado>
-        <codigo lenguaje="">
-            <!-- Inserta la solución al enunciado aquí-->
+            C <-> B <-> E`. 
+        </enunciado>
+        <codigo lenguaje="Schart">
+            using System;
+using static System.Console;
+
+namespace lab1
+{
+    internal class Nodo3
+    {
+        public string Valor;
+        public Nodo3 Izquierda;
+        public Nodo3 Derecha;
+        public Nodo3(string valor) { Valor = valor; }
+    }
+}
+
+            using System;
+using static System.Console;
+
+namespace lab1
+{
+    internal class ListaDoble3
+    {
+        public Nodo3 Cabeza;
+        public Nodo3 Cola;
+
+        public void Agregar(string valor)
+        {
+            Nodo3 nuevo = new Nodo3(valor);
+            if (Cabeza == null)
+            {
+                Cabeza = Cola = nuevo;
+            }
+            else
+            {
+                Cola.Derecha = nuevo;
+                nuevo.Izquierda = Cola;
+                Cola = nuevo;
+            }
+        }
+
+        public void Intercambiar(int k)
+        {
+            Nodo3 desdeInicio = Cabeza;
+            for (int i = 0; i < k; i++) desdeInicio = desdeInicio.Derecha;
+
+            Nodo3 desdeFinal = Cola;
+            for (int i = 0; i < k; i++) desdeFinal = desdeFinal.Izquierda;
+
+            // Intercambiar valores
+            string temporal = desdeInicio.Valor;
+            desdeInicio.Valor = desdeFinal.Valor;
+            desdeFinal.Valor = temporal;
+        }
+
+        public void Imprimir()
+        {
+            Nodo3 actual = Cabeza;
+            while (actual != null)
+            {
+                Write(actual.Valor + " - ");
+                actual = actual.Derecha;
+            }
+            
+        }
+    }
+}
+                using System;
+using static System.Console;
+namespace lab1
+{
+    internal class Program
+    {
+        static void Main()
+        {
+                            // EJERCICIO 3: ListaDoble3
+            ListaDoble3 lista3 = new ListaDoble3();
+            string[] valores3 = { "A", "B", "C", "D", "E" };
+            foreach (string v in valores3) lista3.Agregar(v);
+            WriteLine("\nEJERCICIO 3");
+            WriteLine("\nLa lista original es: ");
+            lista3.Imprimir();
+            lista3.Intercambiar(1);
+            WriteLine("\nLa lista después del intercambio k=1:");
+            lista3.Imprimir();
+        }
+
+    }
+}
+
+
         </codigo>
         <pruebas>
-            <!-- Inserta las pruebas al código implementado aquí-->
+           EJERCICIO 3
+
+La lista original es:
+A - B - C - D - E -
+La lista después del intercambio k=1:
+A - D - C - B - E -
         </pruebas>
         <complejidad>
             <!-- Inserta la complejidad (orden de magnitud de la solución) aquí-->
@@ -69,11 +435,110 @@
             adicionales (como arreglos o pilas). Aprovecha los punteros 'ligaIzq' y 'ligaDer' para
             comparar la lista desde ambos extremos simultáneamente, moviéndote hacia el centro.
         </enunciado>
-        <codigo lenguaje="">
-            <!-- Inserta la solución al enunciado aquí-->
+        <codigo lenguaje="Chart">
+            using System;
+using static System.Console;
+
+namespace lab1
+{
+    internal class Nodo4
+    {
+        public char Valor;
+        public Nodo4 Izquierda;
+        public Nodo4 Derecha;
+        public Nodo4(char valor) { Valor = valor; }
+    }
+}
+using System;
+using static System.Console;
+
+namespace lab1
+{
+    internal class ListaDoble4
+    {
+        public Nodo4 Cabeza;
+        public Nodo4 Cola;
+
+        public void Agregar(char valor)
+        {
+            Nodo4 nuevo = new Nodo4(valor);
+            if (Cabeza == null)
+            {
+                Cabeza = Cola = nuevo;
+            }
+            else
+            {
+                Cola.Derecha = nuevo;
+                nuevo.Izquierda = Cola;
+                Cola = nuevo;
+            }
+        }
+
+        public bool EsPalindromo()
+        {
+            Nodo4 inicio = Cabeza;
+            Nodo4 fin = Cola;
+
+            while (inicio != null && fin != null && inicio != fin && inicio.Izquierda != fin)
+            {
+                if (inicio.Valor != fin.Valor)
+                    return false;
+                inicio = inicio.Derecha;
+                fin = fin.Izquierda;
+            }
+            return true;
+        }
+        public void Imprimir()
+        {
+            Nodo4 actual = Cabeza;
+            while (actual != null)
+            {
+                Write(actual.Valor + " , ");
+                actual = actual.Derecha;
+            }
+            
+        }
+    }
+}
+using System;
+using static System.Console;
+namespace lab1
+{
+    internal class Program
+    {
+        static void Main()
+        {            // EJERCICIO 4: ListaDoble4
+            ListaDoble4 lista4 = new ListaDoble4();
+            char[] valores4 = { 'r', 'a', 'd', 'a', 'r' };
+            //char[] valores4 = { 'r', 'a', 'd', 'x', 'r' };
+            foreach (char c in valores4) lista4.Agregar(c);
+
+            WriteLine("\nEJERCICIO 4");
+            WriteLine("\nAnalizando si la siguiente secuencia de caracteres es un palíndromo:");
+            lista4.Imprimir();
+            bool esPalindromo = lista4.EsPalindromo();
+            if (esPalindromo)
+                WriteLine("\n¡Esta secuencia SI es un palíndromo!");
+            else
+                WriteLine("\nEsta secuencia NO es un palíndromo.");
+        }
+
+    }
+}
+
+
         </codigo>
         <pruebas>
-            <!-- Inserta las pruebas al código implementado aquí-->
+            EJERCICIO 4
+
+Analizando si la siguiente secuencia de caracteres es un palíndromo:
+r , a , d , a , r ,
+¡Esta secuencia SI es un palíndromo!
+            Otro resultado:EJERCICIO 4
+
+Analizando si la siguiente secuencia de caracteres es un palíndromo:
+r , a , d , x , r ,
+Esta secuencia NO es un palíndromo.
         </pruebas>
         <complejidad>
             <!-- Inserta la complejidad (orden de magnitud de la solución) aquí-->
@@ -89,11 +554,154 @@
             9`, los promedios son: - El nodo con valor 3: `(1 + 5) / 2 = 3`. - El nodo con valor 4:
             `(5 + 3) / 2 = 4`. La función debería devolver una nueva lista doblemente enlazada: `3 <->
             4`. </enunciado>
-        <codigo lenguaje="">
-            <!-- Inserta la solución al enunciado aquí-->
+        <codigo lenguaje="Cshar">
+            using System;
+using static System.Console;
+
+namespace lab1
+{
+    internal class Nodo5
+    {
+        public int Valor;
+        public Nodo5 Siguiente;
+
+        public Nodo5(int valor)
+        {
+            Valor = valor;
+            Siguiente = null;
+        }
+    }
+}
+            using System;
+using static System.Console;
+
+namespace lab1
+{
+    internal class Nodo5Doble
+    {
+        public int Valor;
+        public Nodo5Doble Izquierda;
+        public Nodo5Doble Derecha;
+
+        public Nodo5Doble(int valor)
+        {
+            Valor = valor;
+            Izquierda = null;
+            Derecha = null;
+        }
+    }
+}
+using System;
+using static System.Console;
+
+namespace lab1
+{
+internal class ListaSimple5
+{
+        public Nodo5 Cabeza;
+
+        public void Agregar(int valor)
+        {
+            Nodo5 nuevo = new Nodo5(valor);
+            if (Cabeza == null)
+            {
+                Cabeza = nuevo;
+            }
+            else
+            {
+                Nodo5 actual = Cabeza;
+                while (actual.Siguiente != null)
+                    actual = actual.Siguiente;
+                actual.Siguiente = nuevo;
+            }
+        }
+
+        public ListaDoble5 GenerarPromedios()
+        {
+            ListaDoble5 listaPromedios = new ListaDoble5();
+            Nodo5 anterior = Cabeza;
+            Nodo5 actual = Cabeza?.Siguiente;
+
+            while (actual != null && actual.Siguiente != null)
+            {
+                Nodo5 siguiente = actual.Siguiente;
+                if ((anterior.Valor + siguiente.Valor) / 2 == actual.Valor)
+                {
+                    listaPromedios.Agregar(actual.Valor);
+                }
+                anterior = actual;
+                actual = siguiente;
+            }
+            return listaPromedios;
+        }
+    }
+
+    internal class ListaDoble5
+    {
+        public Nodo5Doble Cabeza;
+        public Nodo5Doble Cola;
+
+        public void Agregar(int valor)
+        {
+            Nodo5Doble nuevo = new Nodo5Doble(valor);
+            if (Cabeza == null)
+            {
+                Cabeza = Cola = nuevo;
+            }
+            else
+            {
+                Cola.Derecha = nuevo;
+                nuevo.Izquierda = Cola;
+                Cola = nuevo;
+            }
+        }
+
+        public void Imprimir()
+        {
+            Nodo5Doble actual = Cabeza;
+            while (actual != null)
+            {
+                Write(actual.Valor + " , ");
+                actual = actual.Derecha;
+            }
+            WriteLine("null");
+        }
+    }
+    
+}
+            using System;
+using static System.Console;
+namespace lab1
+{
+    internal class Program
+    {
+        static void Main()
+        {            // EJERCICIO 5: ListaSimple5 y ListaDoble5
+            ListaSimple5 lista5 = new ListaSimple5();
+            int[] valores5 = { 1, 3, 5, 4, 3, 9 };
+            foreach (int v in valores5) lista5.Agregar(v);
+            WriteLine("\nEJERCICIO 5");
+            WriteLine("\nLa lista original es:");
+            foreach (int v in valores5) Write(v + " , ");
+            ListaDoble5 promedios5 = lista5.GenerarPromedios();
+            WriteLine("\nLista de los promedios es:");
+            promedios5.Imprimir();
+        }
+
+    }
+}
+
+   
+
         </codigo>
         <pruebas>
-            <!-- Inserta las pruebas al código implementado aquí-->
+           
+EJERCICIO 5
+
+La lista original es:
+1 , 3 , 5 , 4 , 3 , 9 ,
+Lista de los promedios es:
+3 , 4 , null
         </pruebas>
         <complejidad>
             <!-- Inserta la complejidad (orden de magnitud de la solución) aquí-->
